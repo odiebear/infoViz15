@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Project 2 - Julia Gerhardsen</title>
+	<link rel="stylesheet" href="styles.css">
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+	
+	<h1>Project 2</h1><h2>- The World Values Survey</h2>
+	
+	<p>For this assignment I wanted to look at how happy people are around the globe. The WVS data can be shown in different data tables, diagrams and geographical maps. I can perform tasks as zoom and filter: choose countries of interest, periods of time, what question you are interested in and compare different countries. Since one of the main purposes with data visualization is to offer humans a way to see patterns I thought I would search for some patterns when it comes to the Feeling of happiness in some different countries. </p>
+	
+	<p>E.g. it is possible to view the countries next to each other in a diagram, one wave at a time.</p>
+	<img src="http://postimg.org/image/amyfcy1c1/">
+	
+	<script type="text/javascript">
+	//My d3.code goes in here
+	
+	var w = 510;
+	var h = 250;
+	//var padding = 20;
+	
+	//data very happy swedes timeline
+	var dataset = [ 28, 39, 37, 43, 40 ];
+	
+	//create scale functions
+
+	var xScale = d3.scale.ordinal()
+					 .domain(["1981-1984", "1994-1998", "1999-2004", "2005-2009", "2010-2014"])
+					 .range([40, 150, 255, 360, 450, 560]);
+					 
+	var yScale = d3.scale.linear()
+					 .domain([0, d3.max(dataset, function(d) { return d[1]; })])
+					 .range([h, 0]);	
+	
+
+	//Define X axis
+	var xAxis = d3.svg.axis()
+				  .scale(xScale)
+				  .orient("bottom");
+	
+	
+	var svg = d3.select("body")
+				.append("svg")
+				.attr("width", w)
+	            .attr("height", h)
+
+	
+	var bars = svg.selectAll("rect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("x", function(d, i) {
+				    return i * (w / dataset.length) + 40; })
+				.attr("y", function(d) {
+					return h - (d *4) - 20;   })
+			    .attr("width", 20)
+			    .attr("height", function(d){
+			    	return d * 4;	})
+				.attr("fill", "green");
+				
+	var text = svg.selectAll("text")
+   			 	.data(dataset)
+   			 	.enter()
+   			 	.append("text")
+				.text(function(d) {
+					return d; })
+				.attr("x", function(d, i) {
+					    return i * (w / dataset.length) + 40;
+					})
+				.attr("y", function(d) {
+					return h - (d * 4) - 5; })
+				.attr("fill", "white")
+					;			
+					
+	//Create X axis
+		svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h - 21) + ")")
+				.call(xAxis)
+					;
+						
+
+
+	</script>
+	
+</body>
+
+</html>
+
